@@ -1,0 +1,90 @@
+<div class="sm-frame sm-container">
+  <h2 class="sm-header">{{ (book.id && book.id != '0') ? 'Edit Book' : 'Add book'}}</h2>
+  <div class="sm-body p-2">
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="addBook()">
+      <div fxLayout="row" fxLayoutGap="10px" fxLayout.lt-lg="column">
+
+        <div fxFlex="33.33">
+          <sm-image-upload formControlName="image"></sm-image-upload>
+        </div>
+
+        <div fxLayout="column" fxFlex="33.33">
+          <mat-form-field>
+            <mat-label>Book Title</mat-label>
+            <input matInput type="text" formControlName="title">
+            <!-- <mat-error sb-errors controlName="Book title"></mat-error> -->
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Book Author</mat-label>
+            <input matInput type="text" formControlName="author">
+            <!-- <mat-error sb-errors controlName="Book author"></mat-error> -->
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Book Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let bookStatus of BookStatus.All" [value]="bookStatus">
+                {{ bookStatus.value }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-error sb-errors controlName="Book status"></mat-error> -->
+          </mat-form-field>
+
+          <div *ngIf="form.controls.rating" fxLayout="row" class="pb-2">
+            <b class="pr-2">Rating: </b>
+            <sm-rating [allowEdit]="true" formControlName="rating"></sm-rating>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field *ngIf="form.controls.started" appearance="fill" fxFlex="calc(50%-10px)">
+              <mat-label>Started Reading</mat-label>
+              <input matInput [matDatepicker]="startedPicker" formControlName="started" [max]="maxDate">
+              <mat-datepicker-toggle matSuffix [for]="startedPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startedPicker></mat-datepicker>
+              <!-- <mat-error sb-errors controlName="Started reading date"></mat-error> -->
+            </mat-form-field>
+
+            <mat-form-field *ngIf="form.controls.read" appearance="fill" fxFlex="calc(50%-10px)">
+              <mat-label>Finished Reading</mat-label>
+              <input matInput [matDatepicker]="readPicker" formControlName="read" [max]="maxDate">
+              <mat-datepicker-toggle matSuffix [for]="readPicker"></mat-datepicker-toggle>
+              <mat-datepicker #readPicker></mat-datepicker>
+              <!-- <mat-error sb-errors controlName="Finished reading date"></mat-error> -->
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="fill" fxFlex="calc(50%-10px)">
+              <mat-label>Book Published</mat-label>
+              <input matInput [matDatepicker]="publishedPicker" formControlName="published" [max]="maxDate">
+              <mat-datepicker-toggle matSuffix [for]="publishedPicker"></mat-datepicker-toggle>
+              <mat-datepicker #publishedPicker></mat-datepicker>
+              <!-- <mat-error sb-errors controlName="Book published date"></mat-error> -->
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" fxFlex="calc(50%-10px)">
+              <mat-label>Number Of Pages</mat-label>
+              <input matInput type="number" formControlName="numberOfPages" min="0"
+                oninput="this.value = Math.abs(this.value)">
+              <!-- <mat-error sb-errors controlName="Number of pages"></mat-error> -->
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="33.33">
+          <div fxLayout="column" fxLayoutAlign="start stretch">
+            <mat-form-field>
+              <mat-label>Book Description</mat-label>
+              <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="20" [matAutosizeMaxRows]="50"
+                formControlName="description"></textarea>
+              <!-- <mat-error sb-errors controlName="Book description"></mat-error> -->
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+      <button mat-stroked-button>Add</button>
+    </form>
+  </div>
+</div>

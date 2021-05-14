@@ -1,0 +1,17 @@
+<div *ngIf="rating" [title]="rating.title">
+  <ng-container *ngFor="let index of Rating.All">
+    <ng-container [ngTemplateOutlet]="allowEdit == true ? editable : readonly"
+      [ngTemplateOutletContext]="{ index: index }">
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #editable let-index='index'>
+  <span class="fa fa-star" (mouseover)="hoveredRating = index" (mouseout)="hoveredRating = Rating.NullInstance"
+    (click)="onRatingSelected(index)" [ngClass]="getStarColorClass(index)">
+  </span>
+</ng-template>
+
+<ng-template #readonly let-index='index'>
+  <span #no class="fa fa-star" [ngClass]="getStarColorClass(index)"></span>
+</ng-template>

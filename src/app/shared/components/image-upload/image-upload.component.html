@@ -1,0 +1,7 @@
+<input type='file' #imageInput hidden />
+<div *ngIf="image$ | async as image else defaultImage">
+  <img [src]="image" (click)="imageInput.click()" title="Upload image" class="mat-elevation-z4">
+</div>
+<ng-template #defaultImage>
+  <img src="assets/images/no-image.jpg" (click)="imageInput.click()" title="Upload image" class="mat-elevation-z4">
+</ng-template>

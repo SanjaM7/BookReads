@@ -1,1 +1,117 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~font-awesome/css/font-awesome.min.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media screen and (min-width: 1280px) {
+  .sm-container {
+    padding: 0 200px;
+  }
+}
+
+.sm-primary {
+  background-color: #f4f1ea;
+}
+
+.sm-active {
+  background-color: #d7d5ce;
+}
+
+.sm-frame {
+  // box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+
+
+  & .sm-header {
+    margin: 0;
+    padding: 8px;
+    border-radius: 4px 4px 0 0;
+    background-color: #f4f1ea;
+  }
+
+  & .sm-body {}
+}
+
+// 0px
+.p-0 {
+  padding: 0 !important
+}
+
+.pt-0,
+.py-0 {
+  padding-top: 0 !important
+}
+
+.pr-0,
+.px-0 {
+  padding-right: 0 !important
+}
+
+.pb-0,
+.py-0 {
+  padding-bottom: 0 !important
+}
+
+.pl-0,
+.px-0 {
+  padding-left: 0 !important
+}
+
+$space-xs: 0.25rem; // 4px
+
+.p-1 {
+  padding: $space-xs !important
+}
+
+.pt-1,
+.py-1 {
+  padding-top: $space-xs !important
+}
+
+.pr-1,
+.px-1 {
+  padding-right: $space-xs !important
+}
+
+.pb-1,
+.py-1 {
+  padding-bottom: $space-xs !important
+}
+
+.pl-1,
+.px-1 {
+  padding-left: $space-xs !important
+}
+
+$space-sm: 0.5rem; // 8px
+
+.p-2 {
+  padding: $space-sm !important
+}
+
+.pt-2,
+.py-2 {
+  padding-top: $space-sm !important
+}
+
+.pr-2,
+.px-2 {
+  padding-right: $space-sm !important
+}
+
+.pb-2,
+.py-2 {
+  padding-bottom: $space-sm !important
+}
+
+.pl-2,
+.px-2 {
+  padding-left: $space-sm !important
+}

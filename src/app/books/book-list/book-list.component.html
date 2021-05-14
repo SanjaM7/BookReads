@@ -1,0 +1,72 @@
+<div class="sm-frame">
+  <h2 class="sm-header">
+    <button mat-button (click)="getBooks(BookStatus.All)" [class.sm-active]="selectedBookStatus == BookStatus.All">All
+      Books</button>
+    <button mat-button (click)="getBooks(BookStatus.Read)" [class.sm-active]="selectedBookStatus == BookStatus.Read">
+      Read Books
+    </button>
+    <button mat-button (click)="getBooks(BookStatus.ToRead)"
+      [class.sm-active]="selectedBookStatus == BookStatus.ToRead">
+      Want To Read Books
+    </button>
+    <button mat-button (click)="getBooks(BookStatus.CurrentlyReading)"
+      [class.sm-active]="selectedBookStatus == BookStatus.CurrentlyReading">
+      Currently-Reading Books
+    </button>
+  </h2>
+  <div class="sm-body">
+    <table *ngIf="columns" mat-table [dataSource]="books$" class="table">
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns" [routerLink]="[row.id]"></tr>
+
+      <ng-container *ngFor="let column of columns let i = index">
+        <ng-container [matColumnDef]="column">
+
+          <ng-container *ngIf="column === 'image'">
+            <th mat-header-cell *matHeaderCellDef>
+              <button mat-stroked-button type="button" (click)="toggleImage()">
+                {{ !showImage? 'Show' : 'Hide'}} Image
+              </button>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <img *ngIf="showImage" [src]="row[column]" width="50px" fxLayoutAlign="start center">
+            </td>
+          </ng-container>
+
+
+          <ng-container *ngIf="column === 'rating'">
+            <td mat-cell *matCellDef="let row">
+              <sm-rating [rating]="row[column]"></sm-rating>
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="column === 'status'">
+            <td mat-cell *matCellDef="let row"> {{ row[column].value }} </td>
+          </ng-container>
+
+          <ng-container *ngIf="column === 'started' || column === 'read'">
+            <td mat-cell *matCellDef=" let row"> {{ row[column] | date }} </td>
+          </ng-container>
+
+          <ng-container *ngIf="column === 'actions'">
+            <td mat-cell *matCellDef="let row">
+              <button mat-button type="button" color="accent" matTooltip="Edit Book" [routerLink]="['add', row.id]"
+                (click)="$event.stopPropagation()">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button mat-button type="button" color="warn" matTooltip="Delete Book" (click)="$event.stopPropagation()">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </ng-container>
+
+          <th mat-header-cell *matHeaderCellDef>{{ column | replace: column:columnsFriendlyNames[i] }}</th>
+          <td mat-cell *matCellDef="let row"> {{ row[column] }} </td>
+
+        </ng-container>
+      </ng-container>
+
+    </table>
+  </div>
+</div>
