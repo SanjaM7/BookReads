@@ -1,9 +1,25 @@
 <div *ngIf="book$ | async as book" class="sm-frame sm-container">
   <h2 class="sm-header">Book Details</h2>
-  <div class="sm-body pt-2" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+  <div class="pt-2" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px" fxLayout.lt-lg="column"
+    fxLayoutGap.lt-lg="0px">
     <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px">
-      <img [src]="book.image" width="200px" hight="300px" class="mat-elevation-z4">
-      <mat-card class="sm-primary">{{ book.status.value }}</mat-card>
+      <img *ngIf="book.image else defaultImage" [src]="book.image" class="sm-image mat-elevation-z4">
+      <ng-template #defaultImage>
+        <img src="assets/images/no-image.jpg" class="sm-image mat-elevation-z4">
+      </ng-template>
+      <mat-chip-list>
+        <mat-chip>{{ book.status?.value }}</mat-chip>
+      </mat-chip-list>
+      <div fxLayout="row">
+        <div *ngIf="book.started">
+          <b>Started Reading:</b>
+          <div>{{ book.started | date }}</div>
+        </div>
+        <div *ngIf="book.read">
+          <b>Finished Reading:</b>
+          <div>{{ book.read | date }}</div>
+        </div>
+      </div>
     </div>
     <div>
       <h1>{{ book.title }}</h1>
@@ -18,7 +34,7 @@
       </div>
       <div>{{ book.description }}</div>
     </div>
-    <div fxFlex="200px">
+    <div fxFlex="200px" fxFlex.lt-lg>
       <mat-chip-list>
         <ng-container *ngFor="let genre of book.genres">
           <mat-chip color="primary">{{ genre }}</mat-chip>
@@ -27,11 +43,11 @@
     </div>
   </div>
 
-  <div fxLayout="row" fxLayoutAlign="space-around center">
-    <button mat-flat-button type="button" color="accent" [routerLink]="['/books/add', book.id]">
+  <div fxLayout="row" fxLayoutAlign="space-around center" class="py-2">
+    <button mat-flat-button type="button" color="accent" [routerLink]="['/books/edit', book.id]">
       Edit Book
     </button>
-    <button mat-flat-button type="button" color="warn">
+    <button mat-flat-button type="button" color="warn" (click)="openDeleteDialog(book)">
       Delete Book
     </button>
   </div>

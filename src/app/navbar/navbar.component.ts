@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-
 @Component({
   selector: 'sm-navbar',
   templateUrl: './navbar.component.html',

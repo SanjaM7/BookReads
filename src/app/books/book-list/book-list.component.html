@@ -14,8 +14,8 @@
       Currently-Reading Books
     </button>
   </h2>
-  <div class="sm-body">
-    <table *ngIf="columns" mat-table [dataSource]="books$" class="table">
+  <div>
+    <table *ngIf="columns" mat-table [dataSource]="booksDataSource" class="table">
 
       <tr mat-header-row *matHeaderRowDef="columns"></tr>
       <tr mat-row *matRowDef="let row; columns: columns" [routerLink]="[row.id]"></tr>
@@ -34,6 +34,9 @@
             </td>
           </ng-container>
 
+          <ng-container *ngIf="column === 'name'">
+            <td mat-cell *matCellDef="let row">{{ row[column]}}</td>
+          </ng-container>
 
           <ng-container *ngIf="column === 'rating'">
             <td mat-cell *matCellDef="let row">
@@ -42,7 +45,7 @@
           </ng-container>
 
           <ng-container *ngIf="column === 'status'">
-            <td mat-cell *matCellDef="let row"> {{ row[column].value }} </td>
+            <td mat-cell *matCellDef="let row"> {{ row[column].message }} </td>
           </ng-container>
 
           <ng-container *ngIf="column === 'started' || column === 'read'">
@@ -51,17 +54,18 @@
 
           <ng-container *ngIf="column === 'actions'">
             <td mat-cell *matCellDef="let row">
-              <button mat-button type="button" color="accent" matTooltip="Edit Book" [routerLink]="['add', row.id]"
+              <button mat-button type="button" color="accent" matTooltip="Edit Book" [routerLink]="['edit', row.id]"
                 (click)="$event.stopPropagation()">
                 <i class="fa fa-edit"></i>
               </button>
-              <button mat-button type="button" color="warn" matTooltip="Delete Book" (click)="$event.stopPropagation()">
+              <button mat-button type="button" color="warn" matTooltip="Delete Book"
+                (click)="openDeleteDialog($event, row)">
                 <i class="fa fa-trash"></i>
               </button>
             </td>
           </ng-container>
 
-          <th mat-header-cell *matHeaderCellDef>{{ column | replace: column:columnsFriendlyNames[i] }}</th>
+          <th mat-header-cell *matHeaderCellDef>{{ columnsFriendlyNames[i] }}</th>
           <td mat-cell *matCellDef="let row"> {{ row[column] }} </td>
 
         </ng-container>

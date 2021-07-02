@@ -4,11 +4,11 @@ export class Rating {
   public static readonly Three = new Rating(3, 'liked it');
   public static readonly Four = new Rating(4, 'really liked it');
   public static readonly Five = new Rating(5, 'it was amazing');
-  public static readonly NullInstance = new Rating(0, '');
+  public static readonly None = new Rating(null, '');
 
   public static readonly All = [Rating.One, Rating.Two, Rating.Three, Rating.Four, Rating.Five];
 
-  public get value(): number {
+  public get value(): number | null {
     return this._value;
   }
 
@@ -16,19 +16,8 @@ export class Rating {
     return this._title;
   }
 
-  // private _hoveredRating: Rating;
-
-  // get hoveredRating(): Rating {
-  //     return this._hoveredRating;
-  // }
-
-  // set hoveredRating(rating: Rating) {
-  //     this._hoveredRating = rating;
-  //     console.log(this);
-  // }
-
   public constructor(
-    private _value: number,
+    private _value: number | null,
     private _title: string) {
   }
 
@@ -50,12 +39,8 @@ export class Rating {
             return Rating.Five;
         }
         default: {
-          return Rating.NullInstance;
+          return Rating.None;
         }
     }
   }
-
-  // getColor(index: Rating): string {
-  //   return this._value >= index.value ? 'sm-color-gold' : 'sm-color-grey';
-  // }
 }

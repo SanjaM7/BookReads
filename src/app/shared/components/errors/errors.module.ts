@@ -1,25 +1,25 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SbErrorDefDirective } from './directives/sb-error-def.directive';
-import { Errors } from './errors.component';
+import { ErrorDefDirective } from './directives/error-def.directive';
+import { ErrorsComponent } from './errors.component';
 import { ErrorsServiceFactory } from './errors.service-factory';
 import { ErrorFactory } from './models/error-factory';
-
 @NgModule({
   declarations: [
-    Errors,
-    SbErrorDefDirective
+    ErrorsComponent,
+    ErrorDefDirective
   ],
   imports: [
     CommonModule,
   ],
   exports: [
-    Errors,
-    SbErrorDefDirective
+    ErrorsComponent,
+    ErrorDefDirective
   ],
   providers: [
     ErrorFactory,
-    ErrorsServiceFactory]
+    ErrorsServiceFactory
+  ]
 })
 export class ErrorsModule { }

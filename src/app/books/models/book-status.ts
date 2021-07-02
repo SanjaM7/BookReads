@@ -1,7 +1,7 @@
 export class BookStatus {
-    public static readonly Read = new BookStatus('Read');
-    public static readonly CurrentlyReading = new BookStatus('Currently-Reading');
-    public static readonly ToRead = new BookStatus('To-Read');
+    public static readonly Read = new BookStatus('Read', 'Read');
+    public static readonly CurrentlyReading = new BookStatus('CurrentlyReading', 'Currently Reading');
+    public static readonly ToRead = new BookStatus('ToRead', 'Want To Read');
 
     public static readonly All = [BookStatus.Read, BookStatus.CurrentlyReading, BookStatus.ToRead];
 
@@ -9,7 +9,13 @@ export class BookStatus {
         return this._value;
     }
 
-    private constructor(private _value: string) {
+    public get message(): string {
+        return this._message;
+    }
+
+    private constructor(
+        private _value: string,
+        private _message: string) {
     }
 
     public static parse(status: string): BookStatus {

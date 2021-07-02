@@ -1,9 +1,7 @@
-import { Inject, Injectable, Optional, QueryList, TemplateRef } from "@angular/core";
-import { AbstractControl } from "@angular/forms";
-import { SbErrorDefDirective } from "../directives/sb-error-def.directive";
-import { DEFAULT_ERROR_MESSAGES, ErrorContext, IDefaultErrors, SB_ERROR_DEFAULT_OPTIONS, ValidationError } from "./error-messages";
-
-
+import { Inject, Injectable, Optional, QueryList, TemplateRef } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import { ErrorDefDirective } from '../directives/error-def.directive';
+import { DEFAULT_ERROR_MESSAGES, ErrorContext, IDefaultErrors, SB_ERROR_DEFAULT_OPTIONS, ValidationError } from './error-messages';
 @Injectable()
 export class ErrorFactory {
 
@@ -13,12 +11,11 @@ export class ErrorFactory {
     this._defaultErrorMessages = defaultErrorMessages || DEFAULT_ERROR_MESSAGES;
   }
 
-  private tryCreateCustomError(
+  private _tryCreateCustomError(
     key: string,
     context: any,
-    customErrors: QueryList<SbErrorDefDirective>): ValidationError {
-    var customError = customErrors
-      .find(directive => key === directive.sbErrorDefFor);
+    customErrors: QueryList<ErrorDefDirective>): ValidationError | null {
+    const customError = customErrors.find(directive => key === directive.errorDefFor);
 
     if (customError) {
       return new ValidationError(customError.template, context);
@@ -27,21 +24,21 @@ export class ErrorFactory {
     return null;
   }
 
-  private tryCreateDefaultError(
+  private _tryCreateDefaultError(
     key: string,
     control: AbstractControl,
     controlName: string,
-    template: TemplateRef<any>): ValidationError {
-    var context = this._defaultErrorMessages[key];
+    template: TemplateRef<any>): ValidationError | null {
+    let context = this._defaultErrorMessages[key];
     if (!context) {
       return null;
     }
 
-    if (typeof context == 'function') {
-      var ctx = <ErrorContext<any>>{
-        controlName: controlName,
-        error: control.errors[key]
-      };
+    if (typeof context === 'function') {
+      const ctx = {
+        controlName,
+        error: Object.values(control.errors!)[0]
+      } as ErrorContext<any>;
 
       context = context(ctx);
     }
@@ -50,23 +47,23 @@ export class ErrorFactory {
     return defaultErrorMessage;
   }
 
-  public createError(
+  createError(
     key: string,
     control: AbstractControl,
     controlName: string,
     defaultErrorTemplate: TemplateRef<any>,
-    customErrors: QueryList<SbErrorDefDirective>): ValidationError {
+    customErrors: QueryList<ErrorDefDirective>): ValidationError {
 
-    var error = this.tryCreateCustomError(key, control.errors[key], customErrors);
+    let error = this._tryCreateCustomError(key, Object.values(control.errors!)[0], customErrors);
     if (error) {
       return error;
     }
 
-    error = this.tryCreateDefaultError(key, control, controlName, defaultErrorTemplate);
+    error = this._tryCreateDefaultError(key, control, controlName, defaultErrorTemplate);
     if (error) {
       return error;
     }
 
-    return new ValidationError(defaultErrorTemplate, "Invalid value");
+    return new ValidationError(defaultErrorTemplate, 'Invalid value');
   }
 }

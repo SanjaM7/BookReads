@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+type FunctionCallback = (image: string | null) => {};
 @Component({
   selector: 'sm-image-upload',
   templateUrl: './image-upload.component.html',
@@ -15,36 +16,29 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 })
 export class ImageUploadComponent implements ControlValueAccessor {
 
-  image = new BehaviorSubject<string>('');
-  image$: Observable<string> = this.image.asObservable();
-  onChange!: Function;
+  image = new BehaviorSubject<string | null>('');
+  image$: Observable<string | null> = this.image.asObservable();
+  onChange!: FunctionCallback;
 
-  @HostListener('change', ['$event.target.files']) emitFiles(event: FileList) {
-    const file = event && event.item(0);
-    if(!file) {
+  writeValue(value: string): void { this.image.next(value); }
+  registerOnTouched(): void {}
+  registerOnChange(fn: FunctionCallback): void { this.onChange = fn; }
+
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
       return;
     }
-    
-    this.onChange(file);
-    this.image$ = getFile(file);
+
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const image = reader.result?.toString() ?? null;
+      this.image.next(image);
+      this.onChange(image);
+    };
   }
-
-  writeValue(value: string) {
-    this.image.next(value);
-  };
-  registerOnTouched(fn: Function) {};
-  registerOnChange(fn: Function) { this.onChange = fn };
 }
 
-const getFile = (file: File): Observable<string> => {
-  const readFile = new Subject<any>();
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    readFile.next(reader.result);
-    readFile.complete();
-  };
-
-  reader.readAsDataURL(file);
-  return readFile.asObservable();
-}

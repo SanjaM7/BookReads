@@ -7,7 +7,7 @@
 </div>
 
 <ng-template #editable let-index='index'>
-  <span class="fa fa-star" (mouseover)="hoveredRating = index" (mouseout)="hoveredRating = Rating.NullInstance"
+  <span class="fa fa-star" (mouseover)="hoveredRating = index" (mouseout)="hoveredRating = Rating.None"
     (click)="onRatingSelected(index)" [ngClass]="getStarColorClass(index)">
   </span>
 </ng-template>

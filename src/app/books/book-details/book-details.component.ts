@@ -1,37 +1,45 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { BookService } from '../book.service';
+import { DeleteData } from 'src/app/shared/components/delete/delete-data';
+import { DeleteComponent } from 'src/app/shared/components/delete/delete.component';
+import { BookStateService } from '../book-state.service';
 import { Book } from '../models/book';
 
 @Component({
-  selector: 'sm-book-details',
   templateUrl: './book-details.component.html',
-  styleUrls: ['./book-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDetailsComponent implements OnInit {
 
   book$: Observable<Book> = of();
 
   constructor(
-    private route: ActivatedRoute,
-    private bookService: BookService) {}
+    private _route: ActivatedRoute,
+    private _dialog: MatDialog,
+    private _bookStateService: BookStateService,
+    private _router: Router) {}
 
   ngOnInit(): void {
-    this._getBookId();
+    this._route.data.subscribe(data => {
+      this.book$ = data.book$;
+    });
   }
 
-  private _getBookId(): void {
-    const bookId = this.route.snapshot.paramMap.get('id');
-    if (!bookId) {
-      return;
-    }
+  openDeleteDialog(book: Book): void {
+    const dialogRef = this._dialog.open(DeleteComponent, {
+      width: '500px',
+      data: new DeleteData('book', 'book name', book.title)
+    });
 
-    this.getBook(bookId);
-  }
+    dialogRef.afterClosed().subscribe((deletedClicked) => {
+      if (!deletedClicked) {
+        return;
+      }
 
-  getBook(id: string): void {
-    this.book$ = this.bookService.getBook(id);
+      this._bookStateService.deleteBook(book);
+      this._router.navigateByUrl('/');
+    });
   }
 }

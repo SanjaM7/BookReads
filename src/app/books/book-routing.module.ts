@@ -1,24 +1,35 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BookAddComponent } from './book-add/book-add.component';
+import { BookAddEditComponent } from './book-add-edit/book-add-edit.component';
+import { BookAddEditGuard } from './book-add-edit/book-add-edit.guard';
 import { BookDetailsComponent } from './book-details/book-details.component';
+import { BookGenresComponent } from './book-genres/book-genres.component';
 import { BookListComponent } from './book-list/book-list.component';
+import { BookGuard } from './shared/book.guard';
+import { BookResolver } from './shared/book.resolver';
 
 const routes: Routes = [
   { path: '', component: BookListComponent },
-  { path: ':id', component: BookDetailsComponent },
-  { 
-    path: 'add', 
+  {
+    path: 'genres',
+    component: BookGenresComponent
+  },
+  {
+    path: ':id',
+    component: BookDetailsComponent,
+    canActivate: [BookGuard],
+    resolve: { book$: BookResolver }
+  },
+  {
+    path: 'edit',
     children: [
       {
         path: ':id',
-        component: BookAddComponent,
+        component: BookAddEditComponent,
+        canActivate: [BookGuard],
+        canDeactivate: [BookAddEditGuard],
+        resolve: { book$: BookResolver },
       },
-      {
-        path: '',
-        redirectTo: 'add/0',
-        pathMatch: 'full'
-      }
     ]
   },
 ];

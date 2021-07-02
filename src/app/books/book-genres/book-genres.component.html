@@ -1,0 +1,18 @@
+<form *ngIf="form" [formGroup]="form">
+  <mat-form-field class="example-chip-list">
+    <mat-label>Book genres</mat-label>
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let genre of genres" [selectable]="true" [removable]="true" (removed)="removeGenre(genre)">
+        {{ genre }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input #input placeholder="Add genre..." [matChipInputFor]="chipList" (matChipInputTokenEnd)="addGenre($event)"
+        formControlName="genreControl" [matAutocomplete]="auto">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="genreSelected($event, input)">
+      <mat-option *ngFor="let genre of filteredGenres | async" [value]="genre">
+        {{ genre }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

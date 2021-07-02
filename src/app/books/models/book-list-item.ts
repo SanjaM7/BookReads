@@ -1,39 +1,43 @@
-import { Injectable } from '@angular/core';
 import { Rating } from 'src/app/shared/models/rating';
-import { Adapter } from 'src/core/adapter';
-import { IBookDto } from './book';
+import { Book } from './book';
+import { IBookDto } from './book-dto';
 import { BookStatus } from './book-status';
-
 export class BookListItem {
     constructor(
-        public id: string | null,
+        public id: string,
         public image: string | null,
         public title: string,
         public author: string,
         public rating: Rating,
-        public status: BookStatus,
-        public started: string | null,
-        public read: string | null
+        public status: BookStatus | null,
+        public started: Date | null,
+        public read: Date | null
     ) {}
-}
 
-@Injectable({
-    providedIn: 'root',
-})
-export class BookListItemAdapter implements Adapter<BookListItem, BookListItemAdapterModel> {
-    adapt(item: BookListItemAdapterModel): BookListItem {
+    static FromBookDto(item: IBookDto): BookListItem {
         return new BookListItem(
-            item.data.id,
-            item.data.image,
-            item.data.title,
-            item.data.author,
-            Rating.parse(item.data.rating),
-            BookStatus.parse(item.data.status),
-            item.data.started,
-            item.data.read
+            item.id.toString(),
+            item.image,
+            item.title,
+            item.author,
+            Rating.parse(item.rating),
+            BookStatus.parse(item.status),
+            item.started ? new Date(item.started) : null,
+            item.read ? new Date(item.read) : null,
+        );
+    }
+
+    static FromBook(item: Book): BookListItem {
+        return new BookListItem(
+            item.id,
+            item.image,
+            item.title,
+            item.author,
+            item.rating,
+            item.status,
+            item.started,
+            item.read
         );
     }
 }
-
-export class BookListItemAdapterModel { data!: IBookDto; }
 

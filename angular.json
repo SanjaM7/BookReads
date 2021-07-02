@@ -3,12 +3,13 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "StateManagement": {
+    "BookReads": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
-          "skipTests": true
+          "skipTests": true,
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:class": {
           "skipTests": true
@@ -42,7 +43,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/StateManagement",
+            "outputPath": "dist/BookReads",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -93,18 +94,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "StateManagement:build"
+            "browserTarget": "BookReads:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "StateManagement:build:production"
+              "browserTarget": "BookReads:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "StateManagement:build"
+            "browserTarget": "BookReads:build"
           }
         },
         "test": {
@@ -142,16 +143,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "StateManagement:serve"
+            "devServerTarget": "BookReads:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "StateManagement:serve:production"
+              "devServerTarget": "BookReads:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "StateManagement"
+  "defaultProject": "BookReads"
 }

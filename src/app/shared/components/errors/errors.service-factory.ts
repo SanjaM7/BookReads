@@ -1,9 +1,8 @@
-import { Injectable, QueryList, TemplateRef } from "@angular/core";
-import { AbstractControl } from "@angular/forms";
-import { SbErrorDefDirective } from "./directives/sb-error-def.directive";
-import { ErrorsService } from "./errors.service";
-import { ErrorFactory } from "./models/error-factory";
-
+import { Injectable, QueryList, TemplateRef } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import { ErrorDefDirective } from './directives/error-def.directive';
+import { ErrorsService } from './errors.service';
+import { ErrorFactory } from './models/error-factory';
 @Injectable()
 export class ErrorsServiceFactory {
   constructor(
@@ -13,7 +12,7 @@ export class ErrorsServiceFactory {
   public create(
     control: AbstractControl,
     controlName: string,
-    customErrorMessages: QueryList<SbErrorDefDirective>,
+    customErrorMessages: QueryList<ErrorDefDirective>,
     defaultErrorTemplate: TemplateRef<any>): ErrorsService {
     return new ErrorsService(
       control,

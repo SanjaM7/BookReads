@@ -1,0 +1,46 @@
+<div [formGroup]="form" *ngIf="form">
+  <mat-form-field appearance="fill">
+    <mat-label>Book Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option *ngFor="let bookStatus of BookStatus.All" [value]="bookStatus.value">
+        {{ bookStatus.message }}
+      </mat-option>
+    </mat-select>
+    <mat-error sm-errors controlName="Book status"></mat-error>
+  </mat-form-field>
+
+  <div *ngIf="form.controls.rating" fxLayout="row" class="pb-2">
+    <b class="pr-2">Rating: </b>
+    <sm-rating [allowEdit]="true" formControlName="rating" class="pr-2"></sm-rating>
+    <mat-error *ngIf="!form.controls.rating.value" [sm-errors]="form.controls.rating" controlName="Rating">
+    </mat-error>
+  </div>
+
+  <div formGroupName="datesGroup" fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field appearance="fill" fxFlex="calc(33%-10px)">
+      <mat-label>Book Published</mat-label>
+      <input matInput [matDatepicker]="publishedPicker" formControlName="published" [max]="maxDate">
+      <mat-datepicker-toggle matSuffix [for]="publishedPicker">
+      </mat-datepicker-toggle>
+      <mat-datepicker #publishedPicker></mat-datepicker>
+      <mat-error sm-errors controlName="Published date"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="datesGroup.controls.started" appearance="fill" fxFlex="calc(33%-10px)">
+      <mat-label>Started Reading</mat-label>
+      <input matInput [matDatepicker]="startedPicker" formControlName="started" [max]="maxDate">
+      <mat-datepicker-toggle matSuffix [for]="startedPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startedPicker></mat-datepicker>
+      <mat-error sm-errors controlName="Started reading"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="datesGroup.controls.read" appearance="fill" fxFlex="calc(33%-10px)">
+      <mat-label>Finished Reading</mat-label>
+      <input matInput [matDatepicker]="readPicker" formControlName="read" [max]="maxDate">
+      <mat-datepicker-toggle matSuffix [for]="readPicker"></mat-datepicker-toggle>
+      <mat-datepicker #readPicker></mat-datepicker>
+      <mat-error sm-errors controlName="Finished reading"></mat-error>
+    </mat-form-field>
+
+  </div>
+</div>
